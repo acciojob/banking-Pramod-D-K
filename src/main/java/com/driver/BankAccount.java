@@ -18,16 +18,18 @@ public class BankAccount {
         //Each digit of an account number can lie between 0 and 9 (both inclusive)
         //Generate account number having given number of 'digits' such that the sum of digits is equal to 'sum'
         //If it is not possible, throw "Account Number can not be generated" exception
-        int accountNo=0;
-        Random random=new Random();
-        int a=random.nextInt(digits);
-        while(sum!=a){
-            a=random.nextInt(digits);
+        if (sum > 9 * digits || sum < 0) {
+            throw new Exception("Account Number can not be generated");
         }
-        accountNo=a;
+        StringBuilder accountNumber = new StringBuilder();
+        for (int i = 0; i < digits; i++) {
+            // Place the minimum digit needed here
+            int digit = Math.min(9, sum);
+            accountNumber.append(digit);
+            sum -= digit;
+        }
 
-
-        return null;
+        return accountNumber.toString();
     }
 
     public void deposit(double amount) {
@@ -44,8 +46,12 @@ public class BankAccount {
         } else if ((this.balance-amount)<this.minBalance) {
             throw  new Exception("Insufficient Balance");
         }
-        this.balance=this.balance+amount;
+        this.balance=this.balance-amount;
     }
+
+    ///
+    ///
+
 
     public String getName() {
         return name;
